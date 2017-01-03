@@ -105,6 +105,10 @@ def processDataRecursive(tag,image):
 		if tag2 is None:
 			print 'choose:\n['+"]        [".join(customTags[tag])+']\n\n\n'
 			charused=msvcrt.getch()
+			if charused=='\t':
+				ad( imageByTags,'incompatible',image)
+				ad(tagsByImage,image,'incompatible')
+				return 'exit'
 			if charused=='x':
 				saveData()
 				sys.exit()
@@ -164,33 +168,5 @@ loadData()
 #print 'tagsbyimage:'
 #pprint(tagsByImage)
 #sys.exit()
-daynum=31
-data=getPageData('https://e621.net/post/popular_by_day?day='+str(daynum)+'&month=12&year=2016')
-index=0
-while (True):
-	if index>=len(data):
-		index=0
-		daynum-=1
-		data=getPageData('https://e621.net/post/popular_by_day?day='+str(daynum)+'&month=12&year=2016')
-	#print 'filename: '+data[index][0]
-	#print 'fnlastpart:'+data[index][0][-3:]
-	if data[index][0][-3:]=='jpg':
-		img=Image.open(data[index][0])
-		try:
-			img.save("temp.jpg","JPEG")
-		except:
-			print 'image save didnt work?'
-		processData(data[index][0].replace('cachedData/',''))
-	index+=1
-	print 'tsm:'+str(totalSelectionsMade)+" "+str(totalSelectionsMade%(NUM_SELECTIONS_EACH_IMAGE))
-	if totalSelectionsMade>0 and totalSelectionsMade%(5*NUM_SELECTIONS_EACH_IMAGE)==0:
-		print 'do you want to save (y/n):'
-		while True:
-			charused=msvcrt.getch()
-			if charused=='y':
-				saveData()
-				break
-			if charused=='n':
-				sys.exit()
-saveData()
+
 		#print url
